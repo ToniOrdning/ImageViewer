@@ -44,10 +44,12 @@ public class testi extends Application{
     private MenuBar defaultMenubar;
     private Menu fileMenu;
     private Menu startMenu;
+    private Menu viewMenu;
     private MenuItem openMenuItem;
     private MenuItem nextImageMenuItem;
     private MenuItem previousImageMenuItem;
     private MenuItem startSlideshowMenuItem;
+    private MenuItem fullscreenMenuItem;
 
     @Override
     public void start(Stage primaryStage){
@@ -63,7 +65,7 @@ public class testi extends Application{
         testImageView.setFitWidth(WINDOW_WIDTH);
         testImageView.setFitHeight(WINDOW_HEIGHT);
 
-        //menubar & menus
+        //MenuItems
         openMenuItem = new MenuItem("Open");
         openMenuItem.setOnAction(e -> chooseFile(testImageView));
         openMenuItem.setAccelerator(new KeyCodeCombination(
@@ -77,6 +79,20 @@ public class testi extends Application{
         startSlideshowMenuItem = new MenuItem("Slideshow");
         startSlideshowMenuItem.setOnAction(e -> startSlideshow());
 
+        fullscreenMenuItem = new MenuItem("Fullscreen");
+        fullscreenMenuItem.setOnAction(e -> {
+            if (primaryStage.isFullScreen() == false){
+                primaryStage.setFullScreen(true);
+                layout.getChildren().remove(defaultMenubar);
+            } else if (primaryStage.isFullScreen() == true){
+                primaryStage.setFullScreen(false);
+                layout.getChildren().remove(testImageView);
+                layout.getChildren().addAll(defaultMenubar, testImageView);
+            }
+        });
+        fullscreenMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F11));
+
+        //Menus
         fileMenu = new Menu("File");
         fileMenu.getItems().addAll(openMenuItem, nextImageMenuItem,
         previousImageMenuItem);
@@ -84,8 +100,12 @@ public class testi extends Application{
         startMenu = new Menu("Start");
         startMenu.getItems().addAll(startSlideshowMenuItem);
 
+        viewMenu = new Menu("View");
+        viewMenu.getItems().addAll(fullscreenMenuItem);
+
+        //MenuBar
         defaultMenubar = new MenuBar();
-        defaultMenubar.getMenus().addAll(fileMenu, startMenu);
+        defaultMenubar.getMenus().addAll(fileMenu, startMenu, viewMenu);
 
         //Add elements
         layout.getChildren().addAll(defaultMenubar, testImageView);
