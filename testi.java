@@ -77,6 +77,10 @@ public class testi extends Application{
                         primaryStage.setFullScreen(true);
                     }
                 }
+                break;
+                case F9: startSlideshow();
+                break;
+                default:;
             }
         });
 
@@ -148,6 +152,10 @@ public class testi extends Application{
         testImageView.setFitHeight(newImageHeight);
 
         testImageView.setImage(showNewImage);
+
+    }
+
+    protected void startSlideshow(){
 
     }
 
