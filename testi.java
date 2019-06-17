@@ -1,5 +1,7 @@
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.layout.VBox;
@@ -22,12 +24,15 @@ public class testi extends Application{
     //Windowsize
     private final int WINDOW_WIDTH = 1200;
     private final int WINDOW_HEIGHT = 700;
+    private final Rectangle2D MAX_WINDOW_SIZE = Screen.getPrimary().getBounds();
 
     private List<File> selectedFiles;   //Selecting files with file manager
     private VBox layout;    //Layout for program
     private ImageView testImageView;    //Viewing images
     private Image showNewImage; //switching image
     private int imageCounter = 0;   //Keeping track of shown image
+    private double newImageHeight;  //For images height
+    private double newImageWidth;   //For images width
 
     //Buttons
     private Button fileButton;  //Select files
@@ -80,23 +85,40 @@ public class testi extends Application{
         
         //System.out.println(selectedFiles);    //TROUBLESHOOT
 
-        showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
-        testImageView.setImage(showNewImage);
+        showNewImage();
 
     }
 
     protected void nextImage(){
 
         imageCounter += 1;
-        showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
-        testImageView.setImage(showNewImage);
+        showNewImage();
 
     }
 
     protected void previousImage(){
 
         imageCounter -= 1;
+        showNewImage();
+
+    }
+
+    protected void showNewImage(){
+
         showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
+        newImageWidth = showNewImage.getWidth();
+        newImageHeight = showNewImage.getHeight();
+
+        if (MAX_WINDOW_SIZE.getWidth() < newImageWidth){
+            newImageWidth = MAX_WINDOW_SIZE.getWidth();
+        }
+        if (MAX_WINDOW_SIZE.getHeight() < newImageHeight){
+            newImageHeight = MAX_WINDOW_SIZE.getHeight();
+        }
+        
+        testImageView.setFitWidth(newImageWidth);
+        testImageView.setFitHeight(newImageHeight);
+
         testImageView.setImage(showNewImage);
 
     }
