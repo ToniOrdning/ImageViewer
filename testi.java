@@ -20,13 +20,19 @@ public class testi extends Application{
     }
 
     //Windowsize
-    private final int WINDOW_WIDTH = 600;
-    private final int WINDOW_HEIGHT = 600;
-    private List<File> selectedFiles;
-    private VBox layout;
-    private ImageView testImageView;
-    private Button fileButton;
-    private Image showNewImage;
+    private final int WINDOW_WIDTH = 1200;
+    private final int WINDOW_HEIGHT = 700;
+
+    private List<File> selectedFiles;   //Selecting files with file manager
+    private VBox layout;    //Layout for program
+    private ImageView testImageView;    //Viewing images
+    private Image showNewImage; //switching image
+    private int imageCounter = 0;   //Keeping track of shown image
+
+    //Buttons
+    private Button fileButton;  //Select files
+    private Button nextButton; //Button for next image
+    private Button previousButton; //Button for previous image
 
     @Override
     public void start(Stage primaryStage){
@@ -41,12 +47,17 @@ public class testi extends Application{
         testImageView.setFitWidth(WINDOW_WIDTH);
         testImageView.setFitHeight(WINDOW_HEIGHT);
 
-        //Files
+        //Buttons
         fileButton = new Button("Images");
         fileButton.setOnAction(e -> chooseFile(testImageView));
+        nextButton = new Button("Next");
+        nextButton.setOnAction(e -> nextImage());
+        previousButton = new Button("Previous");
+        previousButton.setOnAction(e -> previousImage());
 
         //Add elements
-        layout.getChildren().addAll(fileButton, testImageView);
+        layout.getChildren().addAll(fileButton, nextButton, previousButton,
+        testImageView);
 
         //Final setup
         primaryStage.setScene(primaryScene);
@@ -54,8 +65,9 @@ public class testi extends Application{
 
     }
 
-    public void chooseFile(ImageView viewer){   //Select files for viewing
+    protected void chooseFile(ImageView viewer){   //Select files for viewing
 
+        imageCounter = 0;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose your pictures");
 
@@ -68,8 +80,25 @@ public class testi extends Application{
         
         //System.out.println(selectedFiles);    //TROUBLESHOOT
 
-        showNewImage = new Image("file:" + selectedFiles.get(0));
+        showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
         testImageView.setImage(showNewImage);
 
     }
+
+    protected void nextImage(){
+
+        imageCounter += 1;
+        showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
+        testImageView.setImage(showNewImage);
+
+    }
+
+    protected void previousImage(){
+
+        imageCounter -= 1;
+        showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
+        testImageView.setImage(showNewImage);
+
+    }
+
 }
