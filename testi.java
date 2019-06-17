@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import java.io.File;
 import javafx.stage.FileChooser.ExtensionFilter;
+import java.util.List;
 
 public class testi extends Application{
     public static void main(String[] args){
@@ -18,29 +19,33 @@ public class testi extends Application{
 
     }
 
+    //Windowsize
+    private final int WINDOW_WIDTH = 600;
+    private final int WINDOW_HEIGHT = 600;
+    private List<File> selectedFiles;
+    private VBox layout;
+    private ImageView testImageView;
+    private Button fileButton;
+    private Image showNewImage;
+
     @Override
     public void start(Stage primaryStage){
 
-        //Windowsize
-        final int WINDOW_WIDTH = 600;
-        final int WINDOW_HEIGHT = 600;
-
         //Setup
         primaryStage.setTitle("Image Viewer");
-        VBox layout = new VBox();
+        layout = new VBox();
         Scene primaryScene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         //Image
-        ImageView testImageView = new ImageView();
-        Image testImage = new Image("jesse.jpg");
-        testImageView.setImage(testImage);
+        testImageView = new ImageView();
         testImageView.setFitWidth(WINDOW_WIDTH);
         testImageView.setFitHeight(WINDOW_HEIGHT);
 
         //Files
-        Button fileButton = new Button("Images");
+        fileButton = new Button("Images");
         fileButton.setOnAction(e -> chooseFile(testImageView));
 
+        //Add elements
         layout.getChildren().addAll(fileButton, testImageView);
 
         //Final setup
@@ -49,7 +54,7 @@ public class testi extends Application{
 
     }
 
-    public void chooseFile(ImageView viewer){
+    public void chooseFile(ImageView viewer){   //Select files for viewing
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose your pictures");
@@ -59,10 +64,12 @@ public class testi extends Application{
                 new ExtensionFilter("PNG", "*.png"),
                 new ExtensionFilter("JPG", "*.jpg"));
 
-        File selectedFile = fileChooser.showOpenDialog(null);
-        Image selectedImage = new Image("file:" + selectedFile);
+        selectedFiles = fileChooser.showOpenMultipleDialog(null);
+        
+        //System.out.println(selectedFiles);    //TROUBLESHOOT
 
-        viewer.setImage(selectedImage);
+        showNewImage = new Image("file:" + selectedFiles.get(0));
+        testImageView.setImage(showNewImage);
 
     }
 }
