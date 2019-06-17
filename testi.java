@@ -9,11 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
-
-import java.awt.Event;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import java.io.File;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.util.List;
@@ -39,10 +40,16 @@ public class testi extends Application{
     private double newImageHeight;  //For images height
     private double newImageWidth;   //For images width
 
-    //Buttons
-    private Button fileButton;  //Select files
-    private Button nextButton; //Button for next image
-    private Button previousButton; //Button for previous image
+    //Menu
+    private MenuBar defaultMenubar;
+    private Menu fileMenu;
+    private Menu startMenu;
+    private MenuItem openMenuItem;
+    private MenuItem nextImageMenuItem;
+    private MenuItem previousImageMenuItem;
+    private MenuItem startSlideshowMenuItem;
+
+
 
     @Override
     public void start(Stage primaryStage){
@@ -58,35 +65,32 @@ public class testi extends Application{
         testImageView.setFitWidth(WINDOW_WIDTH);
         testImageView.setFitHeight(WINDOW_HEIGHT);
 
-        //Buttons
-        fileButton = new Button("Images");
-        fileButton.setOnAction(e -> chooseFile(testImageView));
-        nextButton = new Button("Next");
-        nextButton.setOnAction(e -> nextImage());
-        previousButton = new Button("Previous");
-        previousButton.setOnAction(e -> previousImage());
+        //menubar & menus
+        openMenuItem = new MenuItem("Open");
+        openMenuItem.setOnAction(e -> chooseFile(testImageView));
+        openMenuItem.setAccelerator(new KeyCodeCombination(
+            KeyCode.O, KeyCombination.CONTROL_DOWN
+        ));
+        nextImageMenuItem = new MenuItem("Next");
+        nextImageMenuItem.setOnAction(e -> nextImage());
+        previousImageMenuItem = new MenuItem("Previous");
+        previousImageMenuItem.setOnAction(e -> previousImage());
 
-        layout.setOnKeyPressed(e -> {
-            switch (e.getCode()){
-                case LEFT: previousImage();
-                break;
-                case RIGHT: nextImage();
-                break;
-                case F11: {
-                    if (primaryStage.isFullScreen() == false){
-                        primaryStage.setFullScreen(true);
-                    }
-                }
-                break;
-                case F9: startSlideshow();
-                break;
-                default:;
-            }
-        });
+        startSlideshowMenuItem = new MenuItem("Slideshow");
+        startSlideshowMenuItem.setOnAction(e -> startSlideshow());
+
+        fileMenu = new Menu("File");
+        fileMenu.getItems().addAll(openMenuItem, nextImageMenuItem,
+        previousImageMenuItem);
+
+        startMenu = new Menu("Start");
+        startMenu.getItems().addAll(startSlideshowMenuItem);
+
+        defaultMenubar = new MenuBar();
+        defaultMenubar.getMenus().addAll(fileMenu, startMenu);
 
         //Add elements
-        layout.getChildren().addAll(fileButton, nextButton, previousButton,
-        testImageView);
+        layout.getChildren().addAll(defaultMenubar, testImageView);
 
         //Final setup
         primaryStage.setScene(primaryScene);
@@ -156,7 +160,7 @@ public class testi extends Application{
     }
 
     protected void startSlideshow(){
-
+        //TEE SLIDESHOW
     }
 
 }
