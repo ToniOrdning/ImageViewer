@@ -8,8 +8,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+
+import java.awt.Event;
 import java.io.File;
 import javafx.stage.FileChooser.ExtensionFilter;
 import java.util.List;
@@ -22,9 +26,10 @@ public class testi extends Application{
     }
 
     //Windowsize
-    private final int WINDOW_WIDTH = 1200;
-    private final int WINDOW_HEIGHT = 700;
-    private final Rectangle2D MAX_WINDOW_SIZE = Screen.getPrimary().getBounds();
+    private final int WINDOW_WIDTH = 1200;  //Default window width
+    private final int WINDOW_HEIGHT = 700;  //Default window height
+    private final Rectangle2D MAX_WINDOW_SIZE =
+    Screen.getPrimary().getBounds();    //For fullscreen images size limit
 
     private List<File> selectedFiles;   //Selecting files with file manager
     private VBox layout;    //Layout for program
@@ -42,6 +47,7 @@ public class testi extends Application{
     @Override
     public void start(Stage primaryStage){
 
+        //System.out.println(MAX_WINDOW_SIZE);    //TROUBLESHOOT
         //Setup
         primaryStage.setTitle("Image Viewer");
         layout = new VBox();
@@ -60,6 +66,20 @@ public class testi extends Application{
         previousButton = new Button("Previous");
         previousButton.setOnAction(e -> previousImage());
 
+        layout.setOnKeyPressed(e -> {
+            switch (e.getCode()){
+                case LEFT: previousImage();
+                break;
+                case RIGHT: nextImage();
+                break;
+                case F11: {
+                    if (primaryStage.isFullScreen() == false){
+                        primaryStage.setFullScreen(true);
+                    }
+                }
+            }
+        });
+
         //Add elements
         layout.getChildren().addAll(fileButton, nextButton, previousButton,
         testImageView);
@@ -77,9 +97,9 @@ public class testi extends Application{
         fileChooser.setTitle("Choose your pictures");
 
         fileChooser.getExtensionFilters().addAll(
-                new ExtensionFilter("Image Files", "*.png", "*.jpg"),
-                new ExtensionFilter("PNG", "*.png"),
-                new ExtensionFilter("JPG", "*.jpg"));
+            new ExtensionFilter("Image Files", "*.png", "*.jpg"),
+            new ExtensionFilter("PNG", "*.png"),
+            new ExtensionFilter("JPG", "*.jpg"));
 
         selectedFiles = fileChooser.showOpenMultipleDialog(null);
         
@@ -91,14 +111,22 @@ public class testi extends Application{
 
     protected void nextImage(){
 
-        imageCounter += 1;
+        if (imageCounter >= selectedFiles.size() - 1) {
+            imageCounter = 0;
+        } else {
+            imageCounter += 1;
+        }
         showNewImage();
 
     }
 
     protected void previousImage(){
 
-        imageCounter -= 1;
+        if (imageCounter <= 0) {
+            imageCounter = selectedFiles.size() - 1;
+        } else {
+            imageCounter -= 1;
+        }
         showNewImage();
 
     }
