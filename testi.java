@@ -49,8 +49,6 @@ public class testi extends Application{
     private MenuItem previousImageMenuItem;
     private MenuItem startSlideshowMenuItem;
 
-
-
     @Override
     public void start(Stage primaryStage){
 
