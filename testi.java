@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -11,12 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import java.io.File;
-import javafx.stage.FileChooser.ExtensionFilter;
 import java.util.List;
 
 public class testi extends Application{
