@@ -5,7 +5,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.geometry.Pos;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -36,7 +37,7 @@ public class testi extends Application{
 
     //Misc
     private List<File> selectedFiles;   //Selecting files with file manager
-    private VBox layout;    //Layout for program
+    private BorderPane layout;    //Layout for program
     private ImageView testImageView;    //Viewing images
     private Image showNewImage; //switching image
     private Runnable slideshowImage = () -> {
@@ -65,7 +66,7 @@ public class testi extends Application{
         //System.out.println(MAX_WINDOW_SIZE);    //TROUBLESHOOT
         //Setup
         primaryStage.setTitle("Image Viewer");
-        layout = new VBox();
+        layout = new BorderPane();
         Scene primaryScene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         //Image
@@ -101,7 +102,8 @@ public class testi extends Application{
             } else if (primaryStage.isFullScreen() == true){
                 primaryStage.setFullScreen(false);
                 layout.getChildren().remove(testImageView);
-                layout.getChildren().addAll(defaultMenubar, testImageView);
+                layout.setTop(defaultMenubar);
+                layout.setCenter(testImageView);
             }
         });
         fullscreenMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F11));
@@ -122,7 +124,8 @@ public class testi extends Application{
         defaultMenubar.getMenus().addAll(fileMenu, startMenu, viewMenu);
 
         //Add elements
-        layout.getChildren().addAll(defaultMenubar, testImageView);
+        layout.setTop(defaultMenubar);
+        layout.setCenter(testImageView);
 
         //Final setup
         primaryStage.setScene(primaryScene);
@@ -174,6 +177,7 @@ public class testi extends Application{
     protected void showNewImage(){
 
         showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
+        showNewImage.isPreserveRatio();
         newImageWidth = showNewImage.getWidth();
         newImageHeight = showNewImage.getHeight();
 
