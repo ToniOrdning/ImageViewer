@@ -37,12 +37,16 @@ public class testi extends Application{
 
     //Misc
     private List<File> selectedFiles;   //Selecting files with file manager
+    private int fileCount = 0;
     private BorderPane layout;    //Layout for program
     private ImageView testImageView;    //Viewing images
     private Image showNewImage; //switching image
     private Runnable slideshowImage = () -> {
-    nextImage();
+        nextImage();
     };   //For slideshows images
+    private Runnable randomSlideshowImage = () -> {
+        randomImage();
+    };
     private int imageCounter = 0;   //Keeping track of shown image
     private double newImageHeight;  //For images height
     private double newImageWidth;   //For images width
@@ -58,6 +62,7 @@ public class testi extends Application{
     private MenuItem nextImageMenuItem;
     private MenuItem previousImageMenuItem;
     private MenuItem startSlideshowMenuItem;
+    private MenuItem randomSlideshowMenuItem;
     private MenuItem fullscreenMenuItem;
 
     @Override
@@ -94,6 +99,9 @@ public class testi extends Application{
         startSlideshowMenuItem = new MenuItem("Slideshow");
         startSlideshowMenuItem.setOnAction(e -> startSlideshow());
 
+        randomSlideshowMenuItem = new MenuItem("Random Slideshow");
+        randomSlideshowMenuItem.setOnAction(e -> startRandomSlideshow());
+
         fullscreenMenuItem = new MenuItem("Fullscreen");
         fullscreenMenuItem.setOnAction(e -> {
             if (primaryStage.isFullScreen() == false){
@@ -114,7 +122,8 @@ public class testi extends Application{
         previousImageMenuItem);
 
         startMenu = new Menu("Start");
-        startMenu.getItems().addAll(startSlideshowMenuItem);
+        startMenu.getItems().addAll(startSlideshowMenuItem,
+        randomSlideshowMenuItem);
 
         viewMenu = new Menu("View");
         viewMenu.getItems().addAll(fullscreenMenuItem);
@@ -173,6 +182,18 @@ public class testi extends Application{
         showNewImage();
 
     }
+    
+    protected void randomImage(){
+
+        System.out.println("Random start");
+        fileCount = selectedFiles.size();
+        imageCounter = (int) Math.floor(Math.random() * fileCount + 1);
+        System.out.println(imageCounter);
+        System.out.println("Random call");
+        showNewImage();
+        System.out.println("Random end");
+
+    }
 
     protected void showNewImage(){
 
@@ -190,7 +211,15 @@ public class testi extends Application{
 
     protected void startSlideshow(){
 
-        sessionChange.scheduleAtFixedRate(slideshowImage, 5, 5, TimeUnit.SECONDS);
+        sessionChange.scheduleAtFixedRate(slideshowImage, 5, 5,
+        TimeUnit.SECONDS);
+
+    }
+
+    protected void startRandomSlideshow(){
+
+        sessionChange.scheduleAtFixedRate(randomSlideshowImage, 5, 5,
+        TimeUnit.SECONDS);
 
     }
 
