@@ -176,17 +176,10 @@ public class testi extends Application{
 
     protected void showNewImage(){
 
-        showNewImage = new Image("file:" + selectedFiles.get(imageCounter));
-        showNewImage.isPreserveRatio();
+        showNewImage = new Image(("file:" + selectedFiles.get(imageCounter)),
+        MAX_WINDOW_SIZE.getWidth(), MAX_WINDOW_SIZE.getHeight(), true, true);
         newImageWidth = showNewImage.getWidth();
         newImageHeight = showNewImage.getHeight();
-
-        if (MAX_WINDOW_SIZE.getWidth() < newImageWidth){
-            newImageWidth = MAX_WINDOW_SIZE.getWidth();
-        }
-        if (MAX_WINDOW_SIZE.getHeight() < newImageHeight){
-            newImageHeight = MAX_WINDOW_SIZE.getHeight();
-        }
         
         testImageView.setFitWidth(newImageWidth);
         testImageView.setFitHeight(newImageHeight);
