@@ -17,6 +17,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class testi extends Application{
     public static void main(String[] args){
@@ -31,13 +34,19 @@ public class testi extends Application{
     private final Rectangle2D MAX_WINDOW_SIZE =
     Screen.getPrimary().getBounds();    //For fullscreen images size limit
 
+    //Misc
     private List<File> selectedFiles;   //Selecting files with file manager
     private VBox layout;    //Layout for program
     private ImageView testImageView;    //Viewing images
     private Image showNewImage; //switching image
+    private Runnable slideshowImage = () -> {
+    nextImage();
+    };   //For slideshows images
     private int imageCounter = 0;   //Keeping track of shown image
     private double newImageHeight;  //For images height
     private double newImageWidth;   //For images width
+    private ScheduledExecutorService sessionChange =
+    Executors.newScheduledThreadPool(1);    //For timing picture changes
 
     //Menu
     private MenuBar defaultMenubar;
@@ -72,8 +81,14 @@ public class testi extends Application{
         ));
         nextImageMenuItem = new MenuItem("Next");
         nextImageMenuItem.setOnAction(e -> nextImage());
+        nextImageMenuItem.setAccelerator(new KeyCodeCombination(
+            KeyCode.RIGHT, KeyCombination.CONTROL_ANY
+        ));
         previousImageMenuItem = new MenuItem("Previous");
         previousImageMenuItem.setOnAction(e -> previousImage());
+        previousImageMenuItem.setAccelerator(new KeyCodeCombination(
+            KeyCode.LEFT, KeyCombination.CONTROL_ANY
+        ));
 
         startSlideshowMenuItem = new MenuItem("Slideshow");
         startSlideshowMenuItem.setOnAction(e -> startSlideshow());
@@ -177,7 +192,9 @@ public class testi extends Application{
     }
 
     protected void startSlideshow(){
-        //TEE SLIDESHOW
+
+        sessionChange.scheduleAtFixedRate(slideshowImage, 5, 5, TimeUnit.SECONDS);
+
     }
 
 }
