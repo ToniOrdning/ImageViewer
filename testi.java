@@ -223,6 +223,7 @@ public class testi extends Application{
 
         testImageView.setFitWidth(tempWindowWidth);
         testImageView.setFitHeight(tempWindowHeight);
+        testImageView.setSmooth(true);
 
         try{
             showNewImage = new Image("file:" + selectedFiles.get(imageCounter),
