@@ -221,16 +221,25 @@ public class testi extends Application{
         tempWindowHeight = primaryScene.getHeight();
         System.out.println(tempWindowHeight);
 
-        testImageView.setFitWidth(tempWindowWidth);
-        testImageView.setFitHeight(tempWindowHeight);
-        testImageView.setSmooth(true);
-
         try{
             showNewImage = new Image("file:" + selectedFiles.get(imageCounter),
             0, 0, true, false); //Get new image
         } catch (java.lang.NullPointerException e) {
             System.out.println(e.getMessage());
         }
+
+        if (showNewImage.getWidth() > tempWindowWidth) {
+            testImageView.setFitWidth(tempWindowWidth);
+        } else {
+            testImageView.setFitWidth(showNewImage.getWidth());
+        }
+        if (showNewImage.getHeight() > tempWindowHeight) {
+            testImageView.setFitHeight(tempWindowHeight);
+        } else {
+            testImageView.setFitHeight(showNewImage.getHeight());
+        }
+
+        testImageView.setSmooth(true);
 
         testImageView.setImage(showNewImage);   //Show new image
 
