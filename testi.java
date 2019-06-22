@@ -6,6 +6,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,28 +31,27 @@ public class testi extends Application{
     }
 
     //Windowsize
-    private final int WINDOW_WIDTH = 1200;  //Default window width
-    private final int WINDOW_HEIGHT = 700;  //Default window height
-    private final Rectangle2D MAX_WINDOW_SIZE =
-    Screen.getPrimary().getBounds();    //For fullscreen images size limit
+    private final double WINDOW_WIDTH = 1024; //Default window width
+    private final double WINDOW_HEIGHT = 768;  //Default window height
+    private double tempWindowWidth; //For resizing images
+    private double tempWindowHeight;//For resizing images
 
     //Misc
     private List<File> selectedFiles;   //Selecting files with file manager
-    private int fileCount = 0;
+    private int fileCount = 0;  //For randomizing slideshows
     private BorderPane layout;    //Layout for program
     private ImageView testImageView;    //Viewing images
     private Image showNewImage; //switching image
     private Runnable slideshowImage = () -> {
         nextImage();
-    };   //For slideshows images
+    };   //For slideshows
     private Runnable randomSlideshowImage = () -> {
         randomImage();
-    };
+    };  //For randomized slideshows
     private int imageCounter = 0;   //Keeping track of shown image
-    private double newImageHeight;  //For images height
-    private double newImageWidth;   //For images width
     private ScheduledExecutorService sessionChange =
     Executors.newScheduledThreadPool(1);    //For timing picture changes
+    Scene primaryScene;
 
     //Menu
     private MenuBar defaultMenubar;
@@ -72,12 +72,13 @@ public class testi extends Application{
         //Setup
         primaryStage.setTitle("Image Viewer");
         layout = new BorderPane();
-        Scene primaryScene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+        primaryScene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         //Image
         testImageView = new ImageView();
         testImageView.setFitWidth(WINDOW_WIDTH);
         testImageView.setFitHeight(WINDOW_HEIGHT);
+        testImageView.setPreserveRatio(true);
 
         //MenuItems
         openMenuItem = new MenuItem("Open");
@@ -143,6 +144,7 @@ public class testi extends Application{
         layout.setCenter(testImageView);
 
         //Final setup
+        primaryScene.setFill(Color.BLACK);
         primaryStage.setScene(primaryScene);
         primaryStage.show();
 
@@ -153,6 +155,7 @@ public class testi extends Application{
         imageCounter = 0;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose your pictures");
+        fileChooser.setInitialDirectory(new File("E:\\Backups\\.nsfw\\pics\\"));
 
         fileChooser.getExtensionFilters().addAll(
             new ExtensionFilter("Image Files", "*.png", "*.jpg"),
@@ -203,15 +206,22 @@ public class testi extends Application{
 
     protected void showNewImage(){
 
-        showNewImage = new Image(("file:" + selectedFiles.get(imageCounter)),
-        MAX_WINDOW_SIZE.getWidth(), MAX_WINDOW_SIZE.getHeight(), true, true);
-        newImageWidth = showNewImage.getWidth();
-        newImageHeight = showNewImage.getHeight();
-        
-        testImageView.setFitWidth(newImageWidth);
-        testImageView.setFitHeight(newImageHeight);
+        tempWindowWidth = primaryScene.getWidth();
+        System.out.println(tempWindowWidth);
+        tempWindowHeight = primaryScene.getHeight();
+        System.out.println(tempWindowHeight);
 
-        testImageView.setImage(showNewImage);
+        testImageView.setFitWidth(tempWindowWidth);
+        testImageView.setFitHeight(tempWindowHeight);
+
+        try{
+            showNewImage = new Image("file:" + selectedFiles.get(imageCounter),
+            0, 0, true, false); //Get new image
+        } catch (java.lang.NullPointerException e) {
+            System.out.println(e.getMessage());
+        }
+
+        testImageView.setImage(showNewImage);   //Show new image
 
     }
 
