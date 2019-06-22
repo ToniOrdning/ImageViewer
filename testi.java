@@ -20,6 +20,7 @@ import javafx.geometry.Pos;
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -82,29 +83,39 @@ public class testi extends Application{
 
         //MenuItems
         openMenuItem = new MenuItem("Open");
-        openMenuItem.setOnAction(e -> chooseFile(testImageView));
+        openMenuItem.setOnAction(e -> {
+            chooseFile(testImageView);
+        });
         openMenuItem.setAccelerator(new KeyCodeCombination(
             KeyCode.O, KeyCombination.CONTROL_DOWN
         ));
         nextImageMenuItem = new MenuItem("Next");
-        nextImageMenuItem.setOnAction(e -> nextImage());
+        nextImageMenuItem.setOnAction(e -> {
+            nextImage();
+        });
         nextImageMenuItem.setAccelerator(new KeyCodeCombination(
             KeyCode.RIGHT, KeyCombination.CONTROL_ANY
         ));
         previousImageMenuItem = new MenuItem("Previous");
-        previousImageMenuItem.setOnAction(e -> previousImage());
+        previousImageMenuItem.setOnAction(e -> {
+            previousImage();
+        });
         previousImageMenuItem.setAccelerator(new KeyCodeCombination(
             KeyCode.LEFT, KeyCombination.CONTROL_ANY
         ));
 
         startSlideshowMenuItem = new MenuItem("Slideshow");
-        startSlideshowMenuItem.setOnAction(e -> startSlideshow());
+        startSlideshowMenuItem.setOnAction(e -> {
+            startSlideshow();
+        });
         startSlideshowMenuItem.setAccelerator(new KeyCodeCombination(
             KeyCode.F9, KeyCombination.CONTROL_ANY
         ));
 
         randomSlideshowMenuItem = new MenuItem("Random Slideshow");
-        randomSlideshowMenuItem.setOnAction(e -> startRandomSlideshow());
+        randomSlideshowMenuItem.setOnAction(e -> {
+            startRandomSlideshow();
+        });
         randomSlideshowMenuItem.setAccelerator(new KeyCodeCombination(
             KeyCode.F10, KeyCombination.CONTROL_ANY
         ));
@@ -144,7 +155,6 @@ public class testi extends Application{
         layout.setCenter(testImageView);
 
         //Final setup
-        primaryScene.setFill(Color.BLACK);
         primaryStage.setScene(primaryScene);
         primaryStage.show();
 
@@ -227,15 +237,13 @@ public class testi extends Application{
 
     protected void startSlideshow(){
 
-        sessionChange.scheduleAtFixedRate(slideshowImage, 1, 1,
-        TimeUnit.SECONDS);
+        sessionChange.scheduleAtFixedRate(slideshowImage, 1, 1, TimeUnit.SECONDS);
 
     }
 
     protected void startRandomSlideshow(){
 
-        sessionChange.scheduleAtFixedRate(randomSlideshowImage, 1, 1,
-        TimeUnit.SECONDS);
+        sessionChange.scheduleAtFixedRate(randomSlideshowImage, 1, 1, TimeUnit.SECONDS);
 
     }
 
