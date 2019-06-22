@@ -154,6 +154,14 @@ public class testi extends Application{
         layout.setTop(defaultMenubar);
         layout.setCenter(testImageView);
 
+        //Listeners for window resizes
+        primaryScene.widthProperty().addListener((listener) -> {
+            whenWindowSizeUpdate();
+        });
+        primaryScene.heightProperty().addListener((listener) -> {
+            whenWindowSizeUpdate();
+        });
+
         //Final setup
         primaryStage.setScene(primaryScene);
         primaryStage.show();
@@ -254,6 +262,26 @@ public class testi extends Application{
     protected void startRandomSlideshow(){
 
         sessionChange.scheduleAtFixedRate(randomSlideshowImage, 1, 1, TimeUnit.SECONDS);
+
+    }
+
+    protected void whenWindowSizeUpdate() {
+
+        tempWindowWidth = primaryScene.getWidth();
+        tempWindowHeight = primaryScene.getHeight();
+
+        if (showNewImage.getWidth() > tempWindowWidth) {
+            testImageView.setFitWidth(tempWindowWidth);
+        } else {
+            testImageView.setFitWidth(showNewImage.getWidth());
+        }
+        if (showNewImage.getHeight() > tempWindowHeight) {
+            testImageView.setFitHeight(tempWindowHeight);
+        } else {
+            testImageView.setFitHeight(showNewImage.getHeight());
+        }
+
+        
 
     }
 
