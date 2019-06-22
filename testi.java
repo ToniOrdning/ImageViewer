@@ -1,12 +1,10 @@
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -69,7 +67,6 @@ public class testi extends Application{
     @Override
     public void start(Stage primaryStage){
 
-        //System.out.println(MAX_WINDOW_SIZE);    //TROUBLESHOOT
         //Setup
         primaryStage.setTitle("Image Viewer");
         layout = new BorderPane();
@@ -173,7 +170,8 @@ public class testi extends Application{
         imageCounter = 0;
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Choose your pictures");
-        fileChooser.setInitialDirectory(new File("E:\\Backups\\.nsfw\\pics\\"));
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home"),
+        "//Pictures//"));
 
         fileChooser.getExtensionFilters().addAll(
             new ExtensionFilter("Image Files", "*.png", "*.jpg"),
@@ -181,8 +179,6 @@ public class testi extends Application{
             new ExtensionFilter("JPG", "*.jpg"));
 
         selectedFiles = fileChooser.showOpenMultipleDialog(null);
-        
-        //System.out.println(selectedFiles);    //TROUBLESHOOT
 
         showNewImage();
 
@@ -212,22 +208,16 @@ public class testi extends Application{
     
     protected void randomImage(){
 
-        System.out.println("Random start");
         fileCount = selectedFiles.size();
         imageCounter = (int) Math.floor(Math.random() * fileCount + 1);
-        System.out.println(imageCounter);
-        System.out.println("Random call");
         showNewImage();
-        System.out.println("Random end");
 
     }
 
     protected void showNewImage(){
 
         tempWindowWidth = primaryScene.getWidth();
-        System.out.println(tempWindowWidth);
         tempWindowHeight = primaryScene.getHeight();
-        System.out.println(tempWindowHeight);
 
         try{
             showNewImage = new Image("file:" + selectedFiles.get(imageCounter),
@@ -280,8 +270,6 @@ public class testi extends Application{
         } else {
             testImageView.setFitHeight(showNewImage.getHeight());
         }
-
-        
 
     }
 
