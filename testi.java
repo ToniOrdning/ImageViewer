@@ -98,9 +98,15 @@ public class testi extends Application{
 
         startSlideshowMenuItem = new MenuItem("Slideshow");
         startSlideshowMenuItem.setOnAction(e -> startSlideshow());
+        startSlideshowMenuItem.setAccelerator(new KeyCodeCombination(
+            KeyCode.F9, KeyCombination.CONTROL_ANY
+        ));
 
         randomSlideshowMenuItem = new MenuItem("Random Slideshow");
         randomSlideshowMenuItem.setOnAction(e -> startRandomSlideshow());
+        randomSlideshowMenuItem.setAccelerator(new KeyCodeCombination(
+            KeyCode.F10, KeyCombination.CONTROL_ANY
+        ));
 
         fullscreenMenuItem = new MenuItem("Fullscreen");
         fullscreenMenuItem.setOnAction(e -> {
@@ -211,14 +217,14 @@ public class testi extends Application{
 
     protected void startSlideshow(){
 
-        sessionChange.scheduleAtFixedRate(slideshowImage, 5, 5,
+        sessionChange.scheduleAtFixedRate(slideshowImage, 1, 1,
         TimeUnit.SECONDS);
 
     }
 
     protected void startRandomSlideshow(){
 
-        sessionChange.scheduleAtFixedRate(randomSlideshowImage, 5, 5,
+        sessionChange.scheduleAtFixedRate(randomSlideshowImage, 1, 1,
         TimeUnit.SECONDS);
 
     }
