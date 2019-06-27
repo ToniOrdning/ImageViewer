@@ -1,3 +1,7 @@
+//TODO:
+//
+//Close the program properly (ie. Cancel slideshow timer tasks etc.);
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -55,23 +59,10 @@ public class testi extends Application {
     }; // For randomized slideshows
     private int imageCounter = 0; // Keeping track of shown image
     private ScheduledExecutorService sessionChange = Executors.newScheduledThreadPool(1);
-    // For timing picture changes
-    private Timer slideshowTimer = new Timer();
+    private Timer slideshowTimer = new Timer(); // For timing picture changes
+    private boolean slideshowRunning = false;   //For slideshows
+    private boolean randomSlideshowRunning = false; //For slideshows
     Scene primaryScene;
-
-    //Timers for slideshows
-    private TimerTask slideshowTimerTask = new TimerTask() {
-        @Override
-        public void run() {
-            nextImage();
-        }
-    };
-    private TimerTask randomSlideshowTimerTask = new TimerTask() {
-        @Override
-        public void run() {
-            randomImage();
-        }
-    };
 
     // Menu
     private MenuBar defaultMenubar;
@@ -250,22 +241,49 @@ public class testi extends Application {
 
     protected void startSlideshow() {
 
-        try {
-            slideshowTimer.schedule(slideshowTimerTask, 1000, 1000);
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
+        final TimerTask slideshowTimerTask;
 
+        if (slideshowRunning == false){
+            if (randomSlideshowRunning == false){
+
+                slideshowTimerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        nextImage();
+                    }
+                };
+
+                try {
+                    slideshowTimer.schedule(slideshowTimerTask, 1000, 1000);
+                    slideshowRunning = true;
+                } catch (IllegalStateException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
     }
 
     protected void startRandomSlideshow() {
 
-        try {
-            slideshowTimer.schedule(randomSlideshowTimerTask, 1000, 1000);
-        } catch (IllegalStateException e) {
-            System.out.println(e.getMessage());
-        }
+        final TimerTask randomSlideshowTimerTask;
 
+        if (randomSlideshowRunning == false){
+            if (slideshowRunning == false){
+                randomSlideshowTimerTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        randomImage();
+                    }
+                };
+
+                try {
+                    slideshowTimer.schedule(randomSlideshowTimerTask, 1000, 1000);
+                    randomSlideshowRunning = true;
+                } catch (IllegalStateException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
     }
 
     protected void whenWindowSizeUpdate() {
