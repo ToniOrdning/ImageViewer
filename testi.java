@@ -69,7 +69,7 @@ public class testi extends Application {
     private TimerTask randomSlideshowTimerTask = new TimerTask() {
         @Override
         public void run() {
-            nextImage();
+            randomImage();
         }
     };
 
