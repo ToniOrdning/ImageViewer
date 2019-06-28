@@ -1,6 +1,7 @@
 //TODO:
 //
-//Close the program properly (ie. Cancel slideshow timer tasks etc.);
+//1. Close the program properly (ie. Cancel slideshow timer tasks etc.)
+//2. Fix slideshows overlapping with eachother.
 
 import java.io.File;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -51,14 +53,7 @@ public class testi extends Application {
     private BorderPane layout; // Layout for program
     private ImageView showImageView; // Viewing images
     private Image showNewImage; // switching image
-    private Runnable slideshowImage = () -> {
-        nextImage();
-    }; // For slideshows
-    private Runnable randomSlideshowImage = () -> {
-        randomImage();
-    }; // For randomized slideshows
     private int imageCounter = 0; // Keeping track of shown image
-    private ScheduledExecutorService sessionChange = Executors.newScheduledThreadPool(1);
     private Timer slideshowTimer = new Timer(); // For timing picture changes
     private boolean slideshowRunning = false;   //For slideshows
     private boolean randomSlideshowRunning = false; //For slideshows
@@ -111,24 +106,26 @@ public class testi extends Application {
         startSlideshowMenuItem.setOnAction(e -> {
             startSlideshow();
         });
-        startSlideshowMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F9, KeyCombination.CONTROL_ANY));
+        startSlideshowMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F1, KeyCombination.CONTROL_ANY));
 
         randomSlideshowMenuItem = new MenuItem("Random Slideshow");
         randomSlideshowMenuItem.setOnAction(e -> {
             startRandomSlideshow();
         });
-        randomSlideshowMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F10, KeyCombination.CONTROL_ANY));
+        randomSlideshowMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F2, KeyCombination.CONTROL_ANY));
 
         fullscreenMenuItem = new MenuItem("Fullscreen");
         fullscreenMenuItem.setOnAction(e -> {
             if (primaryStage.isFullScreen() == false) {
                 primaryStage.setFullScreen(true);
                 layout.getChildren().remove(defaultMenubar);
+                primaryScene.setCursor(Cursor.NONE);
             } else if (primaryStage.isFullScreen() == true) {
                 primaryStage.setFullScreen(false);
                 layout.getChildren().remove(showImageView);
                 layout.setTop(defaultMenubar);
                 layout.setCenter(showImageView);
+                primaryScene.setCursor(Cursor.DEFAULT);
             }
         });
         fullscreenMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F11));
