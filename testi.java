@@ -1,7 +1,3 @@
-//TODO:
-//
-//1. Close the program properly (ie. Cancel slideshow timer tasks etc.)
-
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -69,6 +65,7 @@ public class testi extends Application {
     private MenuItem startSlideshowMenuItem;
     private MenuItem randomSlideshowMenuItem;
     private MenuItem fullscreenMenuItem;
+    private MenuItem exitProgram;
 
     @Override
     public void start(Stage primaryStage) {
@@ -107,6 +104,12 @@ public class testi extends Application {
         });
         startSlideshowMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.F1, KeyCombination.CONTROL_ANY));
 
+        exitProgram = new MenuItem("Exit");
+        exitProgram.setOnAction(e -> {
+            primaryStage.close();
+        });
+        exitProgram.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
+
         randomSlideshowMenuItem = new MenuItem("Random Slideshow");
         randomSlideshowMenuItem.setOnAction(e -> {
             startRandomSlideshow();
@@ -131,7 +134,7 @@ public class testi extends Application {
 
         // Menus
         fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(openMenuItem, nextImageMenuItem, previousImageMenuItem);
+        fileMenu.getItems().addAll(openMenuItem, nextImageMenuItem, previousImageMenuItem, exitProgram);
 
         startMenu = new Menu("Start");
         startMenu.getItems().addAll(startSlideshowMenuItem, randomSlideshowMenuItem);
