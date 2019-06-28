@@ -243,7 +243,18 @@ public class testi extends Application {
 
         final TimerTask slideshowTimerTask;
 
-        if (slideshowRunning == false){
+        //Checks if slideshow is already running
+        if (slideshowRunning == true){
+            try {
+                //Cancels the current slideshow
+                slideshowTimer.cancel();
+                slideshowRunning = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            //Creates a new slideshow and runs it
+            slideshowTimer = new Timer();
             if (randomSlideshowRunning == false){
 
                 slideshowTimerTask = new TimerTask() {
@@ -258,6 +269,8 @@ public class testi extends Application {
                     slideshowRunning = true;
                 } catch (IllegalStateException e) {
                     System.out.println(e.getMessage());
+                } catch (NullPointerException ne) {
+                    System.out.println(ne.getMessage());
                 }
             }
         }
@@ -267,12 +280,24 @@ public class testi extends Application {
 
         final TimerTask randomSlideshowTimerTask;
 
-        if (randomSlideshowRunning == false){
+        //Checks if the randomized slideshow is running
+        if (randomSlideshowRunning == true){
+            try {
+                //Cancels the current slideshow
+                slideshowTimer.cancel();
+                randomSlideshowRunning = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            //Creates a new randomized slideshow and runs it
+            slideshowTimer = new Timer();
             if (slideshowRunning == false){
+
                 randomSlideshowTimerTask = new TimerTask() {
                     @Override
                     public void run() {
-                        randomImage();
+                        nextImage();
                     }
                 };
 
@@ -281,6 +306,8 @@ public class testi extends Application {
                     randomSlideshowRunning = true;
                 } catch (IllegalStateException e) {
                     System.out.println(e.getMessage());
+                } catch (NullPointerException ne) {
+                    System.out.println(ne.getMessage());
                 }
             }
         }
