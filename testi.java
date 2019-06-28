@@ -1,7 +1,6 @@
 //TODO:
 //
 //1. Close the program properly (ie. Cancel slideshow timer tasks etc.)
-//2. Fix slideshows overlapping with eachother.
 
 import java.io.File;
 import java.io.IOException;
@@ -203,7 +202,7 @@ public class testi extends Application {
     protected void randomImage() {
 
         fileCount = selectedFiles.size();
-        imageCounter = (int) Math.floor(Math.random() * fileCount + 1);
+        imageCounter = (int) Math.floor(Math.random() * fileCount);
         showNewImage();
 
     }
@@ -249,6 +248,14 @@ public class testi extends Application {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        } else if (randomSlideshowRunning == true){
+            try {
+                //Cancels slideshow
+                slideshowTimer.cancel();
+                randomSlideshowRunning = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             //Creates a new slideshow and runs it
             slideshowTimer = new Timer();
@@ -286,6 +293,14 @@ public class testi extends Application {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+        } else if (slideshowRunning == true){
+            try {
+                //cancels slideshow
+                slideshowTimer.cancel();
+                slideshowRunning = false;
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
         } else {
             //Creates a new randomized slideshow and runs it
             slideshowTimer = new Timer();
@@ -294,7 +309,7 @@ public class testi extends Application {
                 randomSlideshowTimerTask = new TimerTask() {
                     @Override
                     public void run() {
-                        nextImage();
+                        randomImage();
                     }
                 };
 
