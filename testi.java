@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -96,7 +97,7 @@ public class testi extends Application {
 
         exitProgram = new MenuItem("Exit");
         exitProgram.setOnAction(e -> {
-            primaryStage.close();
+            Platform.exit();
         });
         exitProgram.setAccelerator(new KeyCodeCombination(KeyCode.Q, KeyCombination.CONTROL_DOWN));
 
