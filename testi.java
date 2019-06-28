@@ -1,19 +1,9 @@
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javafx.application.Application;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -272,7 +262,7 @@ public class testi extends Application {
                 };
 
                 try {
-                    slideshowTimer.schedule(slideshowTimerTask, 1000, 1000);
+                    slideshowTimer.schedule(slideshowTimerTask, 5000, 5000);
                     slideshowRunning = true;
                 } catch (IllegalStateException e) {
                     System.out.println(e.getMessage());
@@ -317,7 +307,7 @@ public class testi extends Application {
                 };
 
                 try {
-                    slideshowTimer.schedule(randomSlideshowTimerTask, 1000, 1000);
+                    slideshowTimer.schedule(randomSlideshowTimerTask, 5000, 5000);
                     randomSlideshowRunning = true;
                 } catch (IllegalStateException e) {
                     System.out.println(e.getMessage());
