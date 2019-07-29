@@ -40,10 +40,11 @@ public class testi extends Application {
     private ImageView showImageView; // Viewing images
     private Image showNewImage; // switching image
     private int imageCounter = 0; // Keeping track of shown image
+    private File imageToDelete; //For deleting images
     private Timer slideshowTimer = new Timer(); // For timing picture changes
     private boolean slideshowRunning = false;   //For slideshows
     private boolean randomSlideshowRunning = false; //For slideshows
-    Scene primaryScene;
+    private Scene primaryScene;
 
     // Menu
     private MenuBar defaultMenubar;
@@ -53,6 +54,7 @@ public class testi extends Application {
     private MenuItem openMenuItem;
     private MenuItem nextImageMenuItem;
     private MenuItem previousImageMenuItem;
+    private MenuItem deleteMenuItem;
     private MenuItem startSlideshowMenuItem;
     private MenuItem randomSlideshowMenuItem;
     private MenuItem fullscreenMenuItem;
@@ -78,16 +80,24 @@ public class testi extends Application {
             chooseFile(showImageView);
         });
         openMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
+
         nextImageMenuItem = new MenuItem("Next");
         nextImageMenuItem.setOnAction(e -> {
             nextImage();
         });
         nextImageMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.RIGHT, KeyCombination.CONTROL_ANY));
+
         previousImageMenuItem = new MenuItem("Previous");
         previousImageMenuItem.setOnAction(e -> {
             previousImage();
         });
         previousImageMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.LEFT, KeyCombination.CONTROL_ANY));
+
+        deleteMenuItem = new MenuItem("Delete");
+        deleteMenuItem.setOnAction(e -> {
+            deleteImage();
+        });
+        deleteMenuItem.setAccelerator(new KeyCodeCombination(KeyCode.DELETE, KeyCombination.CONTROL_ANY));
 
         startSlideshowMenuItem = new MenuItem("Slideshow");
         startSlideshowMenuItem.setOnAction(e -> {
@@ -125,7 +135,8 @@ public class testi extends Application {
 
         // Menus
         fileMenu = new Menu("File");
-        fileMenu.getItems().addAll(openMenuItem, nextImageMenuItem, previousImageMenuItem, exitProgram);
+        fileMenu.getItems().addAll(openMenuItem, nextImageMenuItem, previousImageMenuItem,
+            deleteMenuItem, exitProgram);
 
         startMenu = new Menu("Start");
         startMenu.getItems().addAll(startSlideshowMenuItem, randomSlideshowMenuItem);
@@ -153,7 +164,6 @@ public class testi extends Application {
         primaryScene.getStylesheets().add("testi.css");
         primaryStage.setScene(primaryScene);
         primaryStage.show();
-
     }
 
     protected void chooseFile(ImageView viewer) { // Select files for viewing
@@ -169,7 +179,6 @@ public class testi extends Application {
         selectedFiles = fileChooser.showOpenMultipleDialog(null);
 
         showNewImage();
-
     }
 
     protected void nextImage() {
@@ -180,7 +189,6 @@ public class testi extends Application {
             imageCounter += 1;
         }
         showNewImage();
-
     }
 
     protected void previousImage() {
@@ -191,7 +199,15 @@ public class testi extends Application {
             imageCounter -= 1;
         }
         showNewImage();
+    }
 
+    protected void deleteImage() {
+
+        imageToDelete = selectedFiles.get(imageCounter);
+        System.out.println("Deleting image...");
+        imageToDelete.delete();
+        imageCounter -= 1;
+        showNewImage();
     }
 
     protected void randomImage() {
@@ -199,7 +215,6 @@ public class testi extends Application {
         fileCount = selectedFiles.size();
         imageCounter = (int) Math.floor(Math.random() * fileCount);
         showNewImage();
-
     }
 
     protected void showNewImage() {
@@ -225,9 +240,7 @@ public class testi extends Application {
         }
 
         showImageView.setSmooth(true);
-
         showImageView.setImage(showNewImage); // Show new image
-
     }
 
     protected void startSlideshow() {
@@ -335,7 +348,5 @@ public class testi extends Application {
         } else {
             showImageView.setFitHeight(showNewImage.getHeight());
         }
-
     }
-
 }
