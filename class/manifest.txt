@@ -1,2 +1,2 @@
-Main-Class: testi
+Main-Class: ImageViewer
 
