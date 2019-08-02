@@ -206,7 +206,7 @@ public class ImageViewer extends Application {
         imageToDelete = selectedFiles.get(imageCounter);
         System.out.println("Deleting image...");
         imageToDelete.delete();
-        imageCounter -= 1;
+        imageCounter += 1;
         showNewImage();
     }
 
