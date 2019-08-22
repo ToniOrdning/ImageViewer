@@ -173,7 +173,8 @@ public class ImageViewer extends Application {
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home"), "//Pictures//"));
 
 		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("Image Files", "*.png", "*.jpg"),
-				new ExtensionFilter("PNG", "*.png"), new ExtensionFilter("JPG", "*.jpg"));
+				new ExtensionFilter("Png", "*.png"), new ExtensionFilter("Jpg", "*.jpg"),
+				new ExtensionFilter("Gif", "*.gif"));
 
 		selectedFiles = fileChooser.showOpenMultipleDialog(null);
 
